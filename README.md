@@ -33,6 +33,7 @@ services:
     volumes:
       - ff-db:/var/lib/mysql
       - ff-db-logs:/var/log/mysql
+      
   foolstack-php:
     image: ghcr.io/suika/foolstack-docker:php
     container_name: foolstack-php
@@ -51,6 +52,7 @@ services:
       - ff-foolframe-conf:/var/www/foolfuuka/app/foolz/foolframe/config
       - ff-foolframe-logs:/var/www/foolfuuka/app/foolz/foolframe/logs
 #      - ff-boards:/var/www/foolfuuka/public/foolfuuka/boards # uncomment for image uploads by foolfuuka
+
   foolstack-nginx:
     image: ghcr.io/suika/foolstack-docker:nginx
     container_name: foolstack-nginx
@@ -70,6 +72,7 @@ services:
       - ff-boards:/var/www/foolfuuka/public/foolfuuka/boards:ro
     ports:
       - 8080:80
+      
   foolstack-redis:
     container_name: foolstack-redis
     image: healthcheck/redis
@@ -78,8 +81,9 @@ services:
       - foolstack
     volumes:
       - ff-redis:/data
+      
   foolstack-scraper:
-    image: ghcr.io/suika/foolstack-docker:hayden # :asagi :eve :hayden
+    image: ghcr.io/suika/foolstack-docker:eve # :asagi :eve :hayden
     container_name: foolstack-scraper
     restart: always
     networks:
@@ -89,10 +93,11 @@ services:
         condition: service_healthy
     environment:
       - SCRAPER_BOARDS=w,wg
-      - SCRAPER_DOWNLOAD_MEDIA=True
-      - SCRAPER_DOWNLOAD_THUMBS=True
+      - SCRAPER_DOWNLOAD_MEDIA=True     # true/false if hayden, True/False if eve
+      - SCRAPER_DOWNLOAD_THUMBS=True    # true/false if hayden, True/False if eve
     volumes:
       - ff-boards:/boards
+      
   foolstack-sphinx:
     image: ghcr.io/suika/foolstack-docker:manticore
     container_name: foolstack-sphinx
@@ -105,6 +110,7 @@ services:
     volumes:
       - ff-sphinx-data:/var/lib/manticore
       - ff-sphinx-logs:/var/log/manticore
+      
 volumes:
   ff-foolframe-temp:     # FoolFrame generated content on the fly via php
     driver: local
@@ -128,7 +134,9 @@ volumes:
     driver: local
   ff-redis:              # Redis
     driver: local
+    
 networks:
   foolstack:
     name: foolstack
+
 ```
