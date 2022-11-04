@@ -92,7 +92,7 @@ services:
       foolstack-db:
         condition: service_healthy
     environment:
-      - SCRAPER_BOARDS=wsg,gif,s,g
+      - SCRAPER_BOARDS=wsg,gif
       - SCRAPER_DOWNLOAD_MEDIA=True
       - SCRAPER_DOWNLOAD_THUMBS=True
     volumes:
